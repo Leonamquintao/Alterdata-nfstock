@@ -1,29 +1,41 @@
-# nf-stock
+# Alterdata Software Nf-Stock
 
-## Project setup
+## Configurações necessárias para o Projeto
+
+### Instalação do vue.js
+```
+npm install -g vue
+```
+> Instalação do vue-cli recomendado
+`npm install -g @vue/cli`
+
+### Clonar o projeto
+```
+git clone https://github.com/Leonamquintao/Alterdata-nfstock.git
+```
+
+### Instalar dependências 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Executar o projeto localmente (development)
+> cd para o diretório:
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Executar o projeto localmente (production)
 ```
 npm run build
 ```
 
-### Run your tests
+> Para executar o projeto em produção é necessário instalar uma dependência:
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+npm install -g serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Executar o projeto como em produção (arquivos minificados)
+```
+serve -s dist
+```
