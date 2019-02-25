@@ -4,6 +4,11 @@
 	border-radius: 4px;
 }
 
+.img-logo {
+	width: 20%;
+	height: auto;
+}
+
 h1 {
 	line-height:50px;
 	font-weight:900;
@@ -101,7 +106,6 @@ section {
 	font-weight:900;
 	padding:5px;
 	text-transform:uppercase;
-    
 }
 
 .head-last {
@@ -128,10 +132,6 @@ section {
 
 .navbar-inverse {
 	border-color: #999;
-}
-
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-border-color: #E91C1C;
 }
 
 #price-sec {
@@ -162,7 +162,6 @@ border-color: #E91C1C;
 }
 
 .plan li.main-price {
-	padding: 25px 0px;
 	color: #FF8500;
 	border: none;
 	font-weight: 900;
@@ -186,14 +185,8 @@ small {
 	padding:20px 50px 20px 50px;
 	text-align:right;
 }
-
-@media all and (max-width:640px) and (min-width:381px) {
-	.head-main { 
-		font-size:28px ;
-	}
-}
-@media all and (max-width:381px) and (min-width:200px) {
-	.head-main { 
-		font-size:24px ;
-	}
+#footer img {
+	width: 150px;
+	height: auto;
+	float: left;
 }

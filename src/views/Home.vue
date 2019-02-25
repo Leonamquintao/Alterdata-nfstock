@@ -1,6 +1,8 @@
 <template>
 
   <div class="home">
+
+		<spinner size="large" message="Aguarde..." v-if="showSpinner"></spinner>
         
 		<div class="navbar navbar-inverse navbar-fixed-top">
        
@@ -24,6 +26,8 @@
 						<li><a href="#services-sec">SERVIÇOS</a></li>
 						<li><a href="#price-sec">PLANOS</a></li>
 						<li><a href="#contact-sec">CONTATO</a></li>
+						<li v-if="!logged"><router-link to="/login">ENTRAR</router-link></li>
+						<li v-if="logged"><a href="#">SAIR</a></li>
 					</ul>
 				</div>
 
@@ -106,136 +110,70 @@
 					<h1 class="g-pad-bottom"><i class="fa fa-crosshairs"></i> PLANOS </h1>
                       
 					<div class="col-md-12 text-center ">
-						<div class="col-md-4 col-sm-4">
-							<ul class="plan">		
-								<li class="plan-head"> 15 mil Notas</li>	
-								<li><strong>15K</strong> em arquivos*</li>
+						<div class="col-md-4 col-sm-4" v-for="(plan, idx) in plans" :key="idx">
+							<ul class="plan">
+								<li class="plan-head"> {{plan.name}} </li>	
+								<li><strong>{{plan.size}}</strong> em arquivos*</li>
 								<li>Suporte <strong>Gratuíto</strong> </li>
 								<li><small>não inclui a assinatura do sistema.</small></li>
-									<li class="main-price"> R$24,99 <br>
+									<li class="main-price"> R${{plan.value}} <br>
 									<small> * Somente</small></li>
 								<li class="bottom">
-									<a href="#" class="btn btn-primary btn-lg">Contrate</a>
+									<button class="btn btn-primary btn-lg" @click.prevent="hirePlan(plan)">Contrate</button>
 								</li>
 							</ul>
 						</div>
 
-						<div class="col-md-4 col-sm-4">
-							<ul class="plan">
-								<li class="plan-head">45 mil Notas</li>
-								<li><strong>45K</strong> em arquivos*</li>
-								<li>Suporte <strong>Gratuíto</strong> </li>
-								<li><small>não inclui a assinatura do sistema.</small></li>
-								<li class="main-price"> R$40,99 <br>
-									<small> * Somente</small>
-								</li>
-								<li class="bottom">
-									<a href="#" class="btn btn-primary btn-lg ">Contrate</a>
-								</li>
-							</ul>
-						</div>
-
-						<div class="col-md-4 col-sm-4">
-								<ul class="plan">
-									<li class="plan-head">Ilimitado</li>
-									<li>Suporte <strong>Gratuíto</strong> </li>
-									<li><small>não inclui a assinatura do sistema.</small></li>
-									<li><small>Este valor se refere ao serviço de hospedagem.</small></li>
-									<li class="main-price"> R$69,99 <br>
-										<small> * Somente</small>
-									</li>
-								
-									<li class="bottom">
-										<a href="#" class="btn btn-primary btn-lg ">Contrate</a>
-									</li>
-								</ul>
-						</div>
-                
-
-                </div>
-            </div>
-
-
-        </div>
-    </section>
-    <!-- END PRICE SECTION-->
-    
-    <section  id="contact-sec">
-			<div class="container"> 
-				<div class="row g-pad-bottom">
-					<h1 class="g-pad-bottom"><i class="fa fa-crosshairs"></i> CONTATO  </h1> 
-					<div class="col-md-6 ">
-						<h2>Entre em Contato</h2>
-							
-						<p>
-							<strong>End:</strong> &nbsp; Rua Pref. Sebastião Teixeira, 227 - Varzea, Teresópolis - RJ  
-							<br />
-							A Alterdata tem o objetivo de estar sempre próxima de seus clientes. 
-							Para isso, disponibiliza vários canais de comunicação, sempre procurando o máximo de 
-							agilidade nos contatos.            
-						</p>
-
-						<form>
-								<div class="row">
-										<div class="col-md-6 ">
-												<div class="form-group">
-														<input type="text" class="form-control" required="required" placeholder="Name">
-												</div>
-										</div>
-										<div class="col-md-6 ">
-												<div class="form-group">
-														<input type="text" class="form-control" required="required" placeholder="Email address">
-												</div>
-										</div>
-								</div>
-								<div class="row">
-										<div class="col-md-12 ">
-												<div class="form-group">
-														<textarea name="message" id="message" required="required" class="form-control" rows="3" placeholder="Message"></textarea>
-												</div>
-												<div class="form-group">
-														<button type="submit" class="btn btn-success">Submit Request</button>
-												</div>
-										</div>
-								</div>
-						</form>
-					</div>
-					<div class="col-md-6">
-						<iframe class="cnt" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3688.4018280478117!2d-42.96568514911213!3d-22.413896826032083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbdd44cf882aaa1%3A0x851065ab9c254d2d!2sAlterdata+Software+-+Matriz!5e0!3m2!1spt-BR!2sbr!4v1551103404461" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 					</div>
 				</div>
-			</div>
+      </div>
+    </section>
+    
+    <section  id="contact-sec">
+			<contact-component />
     </section>
 
     <div id="footer">
-      &copy; 1989 - 2019 - Alterdata Software - Direitos reservados  
-    </div>
+			<img alt="alterdata logo" src="../../static/img/logo_alterdata_br.png" />
+			&copy; 1989 - 2019 - Alterdata Software - Direitos reservados
+		</div>
 
 	</div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
+	// @ is an alias to /src
+	import Spinner from '@/components/Spinner.vue';
+	import ContactComponent from '@/components/ContactComponent.vue';
 
-export default {
+	export default {
+		components: { Spinner, ContactComponent },
+		data() {
+			return {
+				showSpinner: false,
+				logged: false,
+				plans: [
+					{ name: '15 mil Notas', size: '15K', value: '24,99', message: 'Suporte Gratuíto', optionalMessage: 'não inclui a assinatura do sistema.'},
+					{ name: '45 mil Notas', size: '45K', value: '40,99', message: 'Suporte Gratuíto', optionalMessage: 'não inclui a assinatura do sistema.'},
+					{ name: 'Ilimitado', size: 'Ilimitado', value: '69,99', message: 'Suporte Gratuíto', optionalMessage: 'não inclui a assinatura do sistema.'},
+				]
+			}
+		},
+		methods: {
+			navigate() {
+				window.open('https://www.alterdata.com.br/', '_blank');
+			},
 
-  components: {
-   
-  },
-  methods: {
-    navigate() {
-      window.open('https://www.alterdata.com.br/', '_blank');
-    }
-  },
-};
+			hirePlan(plan) {
+				console.log('Plano ', plan);
+			}
+		},
+		mounted() {
+
+		}
+	};
 </script>
 
 <style scoped>
-  .img-logo {
-	width: 20%;
-	height: auto;
-}
-
+  
 </style>
-

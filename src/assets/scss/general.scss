@@ -1,7 +1,12 @@
 #app {
+  $error: #e02c50;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  label.invalid, span.invalid { color: $error; }
+  input.invalid, textarea.invalid { border: 1px solid $error; }
+  .error { text-align: left; color: $error; }
 }
 
 @import '../css/bootstrap.css';
