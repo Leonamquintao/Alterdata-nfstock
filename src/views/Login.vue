@@ -84,7 +84,6 @@ export default {
             this.showSpinner = false;
           },(err) => {
             this.showSpinner = false;
-            console.log('Opss => ', err);
             this.showToast('error', `Não foi possível realizar a ação ${err} !`, 'fa-warning');
           })
         } else {
@@ -105,7 +104,6 @@ export default {
             this.showSpinner = false;
           },(err) => {
             this.showSpinner = false;
-            console.log('Opss => ', err);
             this.showToast('error', `Não foi possível realizar a ação ${err} !`, 'fa-warning');
           });
         } else {

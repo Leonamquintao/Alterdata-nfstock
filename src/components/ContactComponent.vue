@@ -80,12 +80,12 @@
             this.showSpinner = true
             setTimeout(() => {
               this.showSpinner = false;
-              this.showToast('success', 'Email enviado com sucesso', 'fa-check-circle');
+              this.showToast('success', 'Email enviado com Sucesso!', 'fa-check-circle');
               this.contact = { }
             }, 4000)
           } else {
             this.showSpinner = false
-            this.showToast('info', 'Verifique os campos informados', 'fa-info-circle');
+            this.showToast('info', 'Verifique novamente os campos informados!', 'fa-info-circle');
           }
 			  });			
       },
