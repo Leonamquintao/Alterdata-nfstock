@@ -6,15 +6,7 @@
 
       <div class="form">
         <form>
-
-          <!-- <div class="form-group required" v-if="!formType">
-            <label for="Nome" class="control-label" :class="{ invalid: errors.has('Nome')}"> Nome </label>
-            <input type="text" name="Nome" class="form-control" placeholder="Nome completo" v-model="credentials.name"
-            v-validate="{ required: true, min: 4, regex: /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ }"
-            :class="{ invalid: errors.has('Nome') }">
-            <span class="error">{{ errors.first('Nome') }}</span>
-          </div> -->
-
+          
           <div class="form-group required">
             <label class="control-label" for="Email" :class="{invalid: errors.has('Email')}"> Endereço de email </label>
             <input type="email" name="Email" class="form-control" placeholder="usuario@email.com" v-model="credentials.email"

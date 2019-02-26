@@ -105,7 +105,6 @@
     </section>
 
 		<v-dialog/>
-		<payment-modal-component />
 
     <section id="price-sec">
 			<div class="container">
@@ -150,9 +149,8 @@
 	import ContactComponent from '@/components/ContactComponent.vue';
 	import PaymentModalComponent from '@/components/PaymentModalComponent.vue';
 
-
 	export default {
-		components: { Spinner, ContactComponent, PaymentModalComponent },
+		components: { Spinner, ContactComponent },
 		data() {
 			return {
 				showSpinner: false,
@@ -176,7 +174,7 @@
 				// this.showToast('error', 'Ação realizada com Sucesso', 'fa-warning');
 
 				if(localStorage.getItem('logged')) {
-					this.renderPaymentModal();
+					this.renderPaymentModal(plan);
 				} else {
 					this.renderSignInSignUpModal();
 				}
@@ -196,8 +194,17 @@
 				})
 			},
 
-			renderPaymentModal() {
-				this.$modal.show('payment-modal-component');
+			renderPaymentModal(plan) {
+				this.$modal.show(PaymentModalComponent,
+					{ data: plan },
+					{
+						name: 'dynamic-modal',
+						resizable: true,
+						adaptive: true,
+						draggable: true,
+						height: 'auto'
+					}
+				);
 			},
 
 			logout() {
