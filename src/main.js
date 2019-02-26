@@ -5,6 +5,7 @@ import router from "./router";
 import VeeValidate from 'vee-validate'
 import br from 'vee-validate/dist/locale/pt_BR'
 import Toasted from 'vue-toasted';
+import VModal from 'vue-js-modal'
 
 Vue.config.productionTip = false;
 
@@ -19,6 +20,7 @@ const config = {
 
 Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } });
 Vue.use(Toasted, { iconPack : 'fontawesome'});
+Vue.use(VModal, { dialog: true });
 
 firebase.initializeApp(config);
 

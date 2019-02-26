@@ -18,7 +18,7 @@
           <div class="form-group required">
             <label class="control-label" for="Email" :class="{invalid: errors.has('Email')}"> Endereço de email </label>
             <input type="email" name="Email" class="form-control" placeholder="usuario@email.com" v-model="credentials.email"
-              v-validate="'required|email'" :class="{ invalid: errors.has('Email') }">
+              v-validate="'required|email'" :class="{ invalid: errors.has('Email') }" data-vv-validate-on="blur">
             <span class="error">{{ errors.first('Email') }}</span>
           </div>
 
@@ -86,9 +86,10 @@ export default {
           this.showSpinner = true;
           firebase.auth().signInWithEmailAndPassword(this.credentials.email, this.credentials.password)
           .then((res) => {
+            this.storeCredentials(res.user.uid, res.user.refreshToken);
+            this.showToast('success', 'Login realizado com Sucesso, aguarde...', 'fa-check-circle');
+            setTimeout(() => this.goBack(), 2000);
             this.showSpinner = false;
-            console.log('user ', res.user);
-            this.showToast('success', 'Tudo oK', 'fa-check-circle');
           },(err) => {
             this.showSpinner = false;
             console.log('Opss => ', err);
@@ -106,9 +107,10 @@ export default {
           this.showSpinner = true;
           firebase.auth().createUserWithEmailAndPassword(this.credentials.email, this.credentials.password)
           .then((res) => {
-            console.log('user ', res.user);
+            this.storeCredentials(res.user.uid, res.user.refreshToken);
+            this.showToast('success', 'Cadastro Criado com sucesso, aguarde...', 'fa-check-circle');
+            setTimeout(() => this.goBack(), 2000);
             this.showSpinner = false;
-            this.showToast('success', 'Cadastro Criado com sucesso', 'fa-check-circle');
           },(err) => {
             this.showSpinner = false;
             console.log('Opss => ', err);
@@ -120,10 +122,10 @@ export default {
       })
     },
 
-    storeCredentials(credentials) {
+    storeCredentials(uid, token) {
       localStorage.setItem('logged', 'true');
-      localStorage.setItem('id', credentials.id);
-      localStorage.setItem('api_token', credentials.api_token);
+      localStorage.setItem('uid', uid);
+      localStorage.setItem('token', token);
     },
 
     showToast(type, message, icon) {

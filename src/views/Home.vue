@@ -27,7 +27,7 @@
 						<li><a href="#price-sec">PLANOS</a></li>
 						<li><a href="#contact-sec">CONTATO</a></li>
 						<li v-if="!logged"><router-link to="/login">ENTRAR</router-link></li>
-						<li v-if="logged"><a href="#">SAIR</a></li>
+						<li v-if="logged" @click="logout()"><a href="/">SAIR</a></li>
 					</ul>
 				</div>
 
@@ -104,6 +104,8 @@
         </div>
     </section>
 
+		<v-dialog/>
+
     <section id="price-sec">
 			<div class="container">
 				<div class="row g-pad-bottom">
@@ -165,14 +167,38 @@
 			},
 
 			hirePlan(plan) {
-				console.log('Plano ', plan);
+				// console.log('Plano ', plan);
+				// this.showToast('success', 'Ação realizada com Sucesso', 'fa-check-circle');
+				// this.showToast('info', 'Ação realizada com Sucesso', 'fa-info-circle');
+				// this.showToast('error', 'Ação realizada com Sucesso', 'fa-warning');
+
+				console.log(localStorage.getItem('logged'))
+
+				if(localStorage.getItem('logged')) {
+					alert('tá Logado')
+				} else {
+					this.renderSignInSignUpModal();
+				}
+				
+			},
+
+			renderSignInSignUpModal() {
+				this.$modal.show('dialog', {
+					title: 'Atenção!',
+					text: 'Para adquirir um de nossos planos é necessário estar logado ou criar uma conta caso não seja registrado!',
+					buttons: [
+						{
+							title: 'Logar ou criar conta',
+							handler: () => { this.$router.push({ path: '/login'}); }
+						},
+						{ title: 'Cancelar' }
+					]
+				})
 			},
 
 			logout() {
-				firebase.auth().signOut().then(() => {
-					this.showToast('success', 'Ação realizada com Sucesso', 'fa-check-circle');
-					localStorage.clear();
-				})
+				localStorage.clear();
+				this.showToast('success', 'Ação realizada com Sucesso', 'fa-check-circle');
 			},
 
 			showToast(type, message, icon) {
@@ -182,6 +208,9 @@
 					duration : 3000
 				});
     	},
+		},
+		mounted() {
+			this.logged = localStorage.getItem('logged');
 		}
 	};
 </script>
