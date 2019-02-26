@@ -7,28 +7,45 @@
       <div class="form">
         <form>
 
-          <!-- <div class="form-group" v-if="!formType">
-            <label for="name">Nome</label>
-            <input type="email" class="form-control" name="name" v-model="credentials.name" placeholder="Nome Completo">
+          <!-- <div class="form-group required" v-if="!formType">
+            <label for="Nome" class="control-label" :class="{ invalid: errors.has('Nome')}"> Nome </label>
+            <input type="text" name="Nome" class="form-control" placeholder="Nome completo" v-model="credentials.name"
+            v-validate="{ required: true, min: 4, regex: /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ }"
+            :class="{ invalid: errors.has('Nome') }">
+            <span class="error">{{ errors.first('Nome') }}</span>
           </div> -->
 
-          <div class="form-group">
-            <label for="email">Endereço de email</label>
-            <input type="email" class="form-control" name="email" v-model="credentials.email" placeholder="email@host.com">
+          <div class="form-group required">
+            <label class="control-label" for="Email" :class="{invalid: errors.has('Email')}"> Endereço de email </label>
+            <input type="email" name="Email" class="form-control" placeholder="usuario@email.com" v-model="credentials.email"
+              v-validate="'required|email'" :class="{ invalid: errors.has('Email') }">
+            <span class="error">{{ errors.first('Email') }}</span>
           </div>
 
-          <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" class="form-control" name="password" v-model="credentials.password" placeholder="Senha">
+          <div class="form-group required">
+            <label for="senha" class="control-label" :class="{ invalid: errors.has('senha')}"> Senha </label>
+            <input :type="fieldType" class="form-control input-btn" name="senha" placeholder="Senha"
+            data-vv-validate-on="blur" v-model="credentials.password"
+            v-validate="'required|min:4'" :class="{invalid: errors.has('senha')}">
+            <span class="error">{{ errors.first('senha') }}</span>
           </div>
 
           <div class="form-group" v-if="!formType">
-            <label for="password-confirm">Confirmação de Senha</label>
-            <input type="password" class="form-control" name="ps_confirm" v-model="credentials.ps_confirm" placeholder="confirmação de senha">
+            <label for="confirm" :class="{ invalid: errors.has('confirm')}"> Confirmação </label>
+            <input :type="fieldType" class="form-control" name="confirm" placeholder="confirmação de senha"
+            v-model="credentials.ps_confirm" v-validate="{ confirmed: credentials.password, required: true }" 
+            data-vv-validate-on="blur" :class="{invalid: errors.has('confirm')}">
+            <span class="error" v-if="errors.first('confirm')">Senha e confirmação devem ser iguais</span>
           </div>
 
           <button class="btn btn-primary" v-if="formType" @click.prevent="login()">Entrar</button>
           <button class="btn btn-primary" v-if="!formType" @click.prevent="createUser()">Enviar</button>
+
+
+          <div style="float: right;">
+            <input class="form-check-input" type="checkbox" @click="passVisibility">
+            <label class="form-check-label"> &nbsp; &nbsp;Exibir senha </label>
+          </div>
 
           <br><br>
 
@@ -37,6 +54,8 @@
       <button type="button" class="btn btn-link" @click.prevent="changeForm(true)">Login</button>
       <button type="button" class="btn btn-link" @click.prevent="changeForm(false)">Registrar</button>
     </div>
+    <br>
+    <button class="btn btn-link" @click.prevent="goBack()">Voltar</button>
   </div>
 </template>
 
@@ -50,28 +69,54 @@ export default {
     return {
       formType: true,
       showSpinner: false,
-      credentials: { name: '', email: 'leonamquintao@gmail.com', password: '', ps_confirm: '' },
+      fieldType: 'password',
+      credentials: { name: '', email: '', password: '', ps_confirm: '' },
     }
   },
   methods: {
     changeForm(val) { this.formType = val },
 
+    passVisibility() { this.fieldType = this.fieldType === 'password' ? 'text' : 'password' },
+
+    goBack() { this.$router.push({ path: '/'}); },
+
     login() {
-      firebase.auth().signInWithEmailAndPassword(this.credentials.email, this.credentials.password)
-      .then((res) => {
-        console.log('user ', res.user);
-      },(err) => {
-        console.log('Opss => ', err);
+      return this.$validator.validateAll().then((valid) => {
+        if(valid) {
+          this.showSpinner = true;
+          firebase.auth().signInWithEmailAndPassword(this.credentials.email, this.credentials.password)
+          .then((res) => {
+            this.showSpinner = false;
+            console.log('user ', res.user);
+            this.showToast('success', 'Tudo oK', 'fa-check-circle');
+          },(err) => {
+            this.showSpinner = false;
+            console.log('Opss => ', err);
+            this.showToast('error', `Não foi possível realizar a ação ${err} !`, 'fa-warning');
+          })
+        } else {
+          this.showToast('info', 'Verifique os campos informados', 'fa-info-circle');
+        }
       })
     },
 
     createUser() {
-      console.log('passou', this.credentials);
-      firebase.auth().createUserWithEmailAndPassword(this.credentials.email, this.credentials.password)
-      .then((res) => {
-        console.log('user ', res.user);
-      },(err) => {
-        console.log('Opss => ', err);
+      return this.$validator.validateAll().then((valid) => {
+        if(valid) {
+          this.showSpinner = true;
+          firebase.auth().createUserWithEmailAndPassword(this.credentials.email, this.credentials.password)
+          .then((res) => {
+            console.log('user ', res.user);
+            this.showSpinner = false;
+            this.showToast('success', 'Cadastro Criado com sucesso', 'fa-check-circle');
+          },(err) => {
+            this.showSpinner = false;
+            console.log('Opss => ', err);
+            this.showToast('error', `Não foi possível realizar a ação ${err} !`, 'fa-warning');
+          });
+        } else {
+          this.showToast('info', 'Verifique os campos informados', 'fa-info-circle');
+        }
       })
     },
 
@@ -79,6 +124,14 @@ export default {
       localStorage.setItem('logged', 'true');
       localStorage.setItem('id', credentials.id);
       localStorage.setItem('api_token', credentials.api_token);
+    },
+
+    showToast(type, message, icon) {
+      return this.$toasted.show( message, {
+        type : type, //'success', 'info', 'error'
+        icon : icon, // 'fa-check-circle', 'fa-info-circle','fa-warning'
+        duration : 3000
+      });
     },
 
   }
@@ -92,6 +145,7 @@ export default {
   }
   .container {
     display: inline-block;
+    border-radius: 5px;
     padding: 20px;
     background-color: #DDD;
     margin-top: 100px;

@@ -166,10 +166,22 @@
 
 			hirePlan(plan) {
 				console.log('Plano ', plan);
-			}
-		},
-		mounted() {
+			},
 
+			logout() {
+				firebase.auth().signOut().then(() => {
+					this.showToast('success', 'Ação realizada com Sucesso', 'fa-check-circle');
+					localStorage.clear();
+				})
+			},
+
+			showToast(type, message, icon) {
+				return this.$toasted.show( message, {
+					type : type, //'success', 'info', 'error'
+					icon : icon, // 'fa-check-circle', 'fa-info-circle','fa-warning'
+					duration : 3000
+				});
+    	},
 		}
 	};
 </script>

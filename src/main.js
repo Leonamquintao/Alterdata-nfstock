@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./router";
 import VeeValidate from 'vee-validate'
 import br from 'vee-validate/dist/locale/pt_BR'
+import Toasted from 'vue-toasted';
 
 Vue.config.productionTip = false;
 
@@ -16,7 +17,8 @@ const config = {
   messagingSenderId: '542911665828'
 }
 
-Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } })
+Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } });
+Vue.use(Toasted, { iconPack : 'fontawesome'});
 
 firebase.initializeApp(config);
 

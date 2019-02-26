@@ -1,5 +1,8 @@
 <template>
-  <div class="container"> 
+  <div class="container">
+
+    <spinner size="large" message="Aguarde..." v-if="showSpinner"></spinner>
+    
     <div class="row g-pad-bottom">
       <h1 class="g-pad-bottom"><i class="fa fa-crosshairs"></i> CONTATO  </h1> 
       <div class="col-md-6 ">
@@ -20,14 +23,14 @@
             <div class="col-md-6 ">
               <input type="text" class="form-control" name="Nome" placeholder="Nome completo" v-model="contact.name"
                 v-validate="{ required: true, min: 4, regex: /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ }"
-                :class="{ invalid: errors.has('Nome') }">
+                :class="{ invalid: errors.has('Nome') }" data-vv-validate-on="blur">
               <span class="error">{{ errors.first('Nome') }}</span>
             </div>
 
             <div class="col-md-6 ">
               <div class="form-group required">
                 <input type="email" name="Email" class="form-control" placeholder="email@host.com" v-model="contact.email"
-                  v-validate="'required|email'" :class="{ invalid: errors.has('Email') }">
+                  v-validate="'required|email'" :class="{ invalid: errors.has('Email') }" data-vv-validate-on="blur">
                 <span class="error">{{ errors.first('Email') }}</span>
               </div>
             </div>
@@ -38,7 +41,8 @@
             <div class="col-md-12 ">
               <div class="form-group">
                 <textarea name="message" required="required" class="form-control" v-model="contact.message" 
-                rows="3" placeholder="Mensagem..." v-validate="{ required: true, min: 10 }" :class="{ invalid: errors.has('Email') }"></textarea>
+                rows="3" placeholder="Mensagem..." v-validate="{ required: true, min: 10 }" 
+                :class="{ invalid: errors.has('Email') }" data-vv-validate-on="blur"></textarea>
                 <span class="error">{{ errors.first('message') }}</span>
               </div>
               <div class="form-group">
@@ -57,7 +61,10 @@
 </template>
 
 <script>
+
   import Spinner from '@/components/Spinner.vue';
+  import firebase from 'firebase';
+
   export default {
     components: { Spinner },
     data() {
@@ -68,19 +75,28 @@
     },
     methods: {
       sendMail() {
-			return this.$validator.validateAll().then((valid) => {
-				if(valid) {
-					this.showSpinner = true
-					console.log('constact ', this.contact)
-					setTimeout(() => {
-						this.contct = { }
-						this.showSpinner = false;
-					}, 4000)
-				} else {
-					this.showSpinner = false
-				}
-			});			
-		},
+        return this.$validator.validateAll().then((valid) => {
+          if(valid) {
+            this.showSpinner = true
+            setTimeout(() => {
+              this.showSpinner = false;
+              this.showToast('success', 'Email enviado com sucesso', 'fa-check-circle');
+              this.contact = { }
+            }, 4000)
+          } else {
+            this.showSpinner = false
+            this.showToast('info', 'Verifique os campos informados', 'fa-info-circle');
+          }
+			  });			
+      },
+      
+      showToast(type, message, icon) {
+        return this.$toasted.show( message, {
+          type : type, //'success', 'info', 'error'
+          icon : icon, // 'fa-check-circle', 'fa-info-circle','fa-warning'
+          duration : 3000
+        });
+      },
     }
   }
 
