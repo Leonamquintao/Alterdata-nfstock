@@ -20,7 +20,7 @@ const config = {
 
 Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } });
 Vue.use(Toasted, { iconPack : 'fontawesome'});
-Vue.use(VModal, { dialog: true });
+Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 
 firebase.initializeApp(config);
 

@@ -105,6 +105,7 @@
     </section>
 
 		<v-dialog/>
+		<payment-modal-component />
 
     <section id="price-sec">
 			<div class="container">
@@ -147,9 +148,11 @@
 	// @ is an alias to /src
 	import Spinner from '@/components/Spinner.vue';
 	import ContactComponent from '@/components/ContactComponent.vue';
+	import PaymentModalComponent from '@/components/PaymentModalComponent.vue';
+
 
 	export default {
-		components: { Spinner, ContactComponent },
+		components: { Spinner, ContactComponent, PaymentModalComponent },
 		data() {
 			return {
 				showSpinner: false,
@@ -172,14 +175,11 @@
 				// this.showToast('info', 'Ação realizada com Sucesso', 'fa-info-circle');
 				// this.showToast('error', 'Ação realizada com Sucesso', 'fa-warning');
 
-				console.log(localStorage.getItem('logged'))
-
 				if(localStorage.getItem('logged')) {
-					alert('tá Logado')
+					this.renderPaymentModal();
 				} else {
 					this.renderSignInSignUpModal();
 				}
-				
 			},
 
 			renderSignInSignUpModal() {
@@ -194,6 +194,10 @@
 						{ title: 'Cancelar' }
 					]
 				})
+			},
+
+			renderPaymentModal() {
+				this.$modal.show('payment-modal-component');
 			},
 
 			logout() {
