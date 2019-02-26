@@ -75,17 +75,6 @@ section {
 	background-color: rgba(255, 255, 255, 0);
 }
 
-.c-pr-i {
-	color:#E91C1C;
-	padding-left:10px;
-	padding-right:10px;
-}
-
-.go-marg {
-	margin-top:40px;
-	color:#E91C1C;
-}
-
 #home-sec { 
   background: url(../../../static/img/cloud.jpg) no-repeat 50% 50%;
 	background-attachment: fixed;
@@ -185,6 +174,7 @@ small {
 	padding:20px 50px 20px 50px;
 	text-align:right;
 }
+
 #footer img {
 	width: 150px;
 	height: auto;
