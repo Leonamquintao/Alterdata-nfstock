@@ -10,12 +10,12 @@ import VModal from 'vue-js-modal'
 Vue.config.productionTip = false;
 
 const config = {
-  apiKey: 'AIzaSyAgWeAGO1E_IVofZzwqwN9LSBZp9l3LrM0',
-  authDomain: 'alterdata-nf-stock.firebaseapp.com',
-  databaseURL: 'https://alterdata-nf-stock.firebaseio.com',
-  projectId: 'alterdata-nf-stock',
-  storageBucket: 'alterdata-nf-stock.appspot.com',
-  messagingSenderId: '542911665828'
+  apiKey: 'api-key',
+  authDomain: 'aut-domain',
+  databaseURL: 'some-url',
+  projectId: 'project-id',
+  storageBucket: 'bucket.com',
+  messagingSenderId: 'messageSenderID'
 }
 
 Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } });

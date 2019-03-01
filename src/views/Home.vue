@@ -168,11 +168,7 @@
 			},
 
 			hirePlan(plan) {
-				// console.log('Plano ', plan);
-				// this.showToast('success', 'Ação realizada com Sucesso', 'fa-check-circle');
-				// this.showToast('info', 'Ação realizada com Sucesso', 'fa-info-circle');
-				// this.showToast('error', 'Ação realizada com Sucesso', 'fa-warning');
-
+				
 				if(localStorage.getItem('logged')) {
 					this.renderPaymentModal(plan);
 				} else {
