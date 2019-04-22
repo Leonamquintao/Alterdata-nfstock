@@ -146,7 +146,6 @@ export default {
     width: 40%;
     height: auto;
   }
-
   .form {
     width: 500px;
     height: auto;

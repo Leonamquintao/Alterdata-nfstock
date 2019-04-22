@@ -93,6 +93,7 @@
 
 <script>
   import Spinner from '@/components/Spinner.vue';
+  import firebase from 'firebase'
 
   export default {
     props: { data: Object },
@@ -108,16 +109,27 @@
 
       submitPayment() {
         return this.$validator.validateAll().then((valid) => {
+
           if(valid) {
             this.showSpinner = true;
-            setTimeout(() => {
+            
+            const userId =  localStorage.getItem('uid');
+            const plan = this.data;
+            const dt = new Date();
+
+            firebase.database().ref('product/' + userId).set({
+              plan: plan.name,
+              value: plan.value,
+              acquisition: dt.toLocaleString()
+            }.then((res) => {
               this.showToast('success', 'Transação efetuada com Sucesso, Parabéns!!!', 'fa-check-circle');
               this.showSpinner = false;
               this.closeByEvent();
-            }, 3000)
+            }));
           } else {
             this.showToast('error', 'Verifique os campos informados', 'fa-info-circle');
           }
+
         })
       },
       showToast(type, message, icon) {

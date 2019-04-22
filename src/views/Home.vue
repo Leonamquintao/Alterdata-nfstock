@@ -2,7 +2,7 @@
 
   <div class="home">
 
-		<spinner size="large" message="Aguarde..." v-if="showSpinner"></spinner>
+		<spinner size="large" message="Aguarde..." v-if="showSpinner" />
         
 		<div class="navbar navbar-inverse navbar-fixed-top">
        
