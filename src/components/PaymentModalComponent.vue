@@ -117,15 +117,23 @@
             const plan = this.data;
             const dt = new Date();
 
-            firebase.database().ref('product/' + userId).set({
+            firebase.database().ref('products/' + userId).set({
               plan: plan.name,
               value: plan.value,
               acquisition: dt.toLocaleString()
-            }.then((res) => {
-              this.showToast('success', 'Transação efetuada com Sucesso, Parabéns!!!', 'fa-check-circle');
+            })
+            .then(() =>{
+              setTimeout(() => {
+                this.showToast('success', 'Transação efetuada com Sucesso, Parabéns!!!', 'fa-check-circle');
+                this.showSpinner = false;
+                this.closeByEvent();
+              }, 3000);
+            })
+            .catch(err => {
               this.showSpinner = false;
-              this.closeByEvent();
-            }));
+              this.showToast('error',  `Não foi possível realizar a ação ${err} !`, 'fa-info-circle');
+            });
+
           } else {
             this.showToast('error', 'Verifique os campos informados', 'fa-info-circle');
           }

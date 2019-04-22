@@ -10,12 +10,14 @@ import VModal from 'vue-js-modal'
 Vue.config.productionTip = false;
 
 const config = {
-  apiKey: "apiKey",
-  authDomain: "authDomain",
-  databaseURL: "https://databaseURL.com",
-  projectId: "projectId",
-  storageBucket: "storageBucket",
-  messagingSenderId: "messagingSenderId"
+  // apiKey: "apiKey",
+  // authDomain: "authDomain",
+  // databaseURL: "https://databaseURL.com",
+  // projectId: "projectId",
+  // storageBucket: "storageBucket",
+  // messagingSenderId: "messagingSenderId"
+
+  
 };
 
 Vue.use(VeeValidate, { locale: 'pt_BR', dictionary: { 'pt_BR': br } });
