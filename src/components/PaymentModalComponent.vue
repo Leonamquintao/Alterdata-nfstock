@@ -13,7 +13,7 @@
           <img class="card-logo" src="../../static/img/logo_alterdata_br.png" alt="logo">
         </div>
 
-        <span class="card-number">{{ payment.cardNumber || '000000000000' | numMask }}</span>
+        <span class="card-number">{{ payment.cardNumber || '0000000000000000' | numMask }}</span>
 
         <div class="row">
           <div class="col-md-6">
@@ -75,8 +75,8 @@
 
           <span class="confirm-text"> * confima o pagamento do plano <strong>{{data.name}}</strong> no valor de <strong>R${{data.value}}</strong>?</span>
 
-          <div class="row btn-row">
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6" style="padding-bottom: 4px;">
               <button class="btn btn-primary btn-block" @click.prevent="submitPayment()">Pagar R${{ data.value }}</button>
             </div>
             <div class="col-md-6">
@@ -116,11 +116,17 @@
             const userId =  localStorage.getItem('uid');
             const plan = this.data;
             const dt = new Date();
+            const { cardName, cardNumber, validThru } = this.payment
 
             firebase.database().ref('products/' + userId).set({
               plan: plan.name,
               value: plan.value,
-              acquisition: dt.toLocaleString()
+              acquisition: dt.toLocaleString(),
+              purchaseDetails: {
+                cardName: cardName.toUpperCase(),
+                cardNumber: cardNumber,
+                validThru: validThru
+              }
             })
             .then(() =>{
               setTimeout(() => {
@@ -182,6 +188,7 @@
 <style scoped>
   .box {
     text-align: center;
+    overflow-x: auto;
   }
   .body {
     width: 400px;
@@ -190,7 +197,9 @@
   }
   .card {
     width: 400px;
-    height: auto;
+    height: 200px;
+    max-width: 400px;
+    max-height: 200px;
     background-color: purple;
     border-radius: 8px;
   }
@@ -200,14 +209,17 @@
   }
   .card-number {
     color: #DDD;
-    font-size: 30px;
+    font-size: 2em;
   }
   .card-name {
     color: #DDD;
-    font-size: 20px;
+    font-size: 1.8emx;
   }
   .details {
     color: #DDD;
+  }
+  p.details {
+    padding-bottom: 0px;
   }
   .btn-row {
     margin-top: 10px;

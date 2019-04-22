@@ -16,7 +16,6 @@ const config = {
   // projectId: "projectId",
   // storageBucket: "storageBucket",
   // messagingSenderId: "messagingSenderId"
-
   
 };
 
